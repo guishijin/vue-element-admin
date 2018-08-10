@@ -1,4 +1,7 @@
+// 使用严格模式
 'use strict'
+
+// 引入必要的模块和文件
 const path = require('path')
 const utils = require('./utils')
 const webpack = require('webpack')
@@ -11,12 +14,16 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
+// 解决路径问题
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
 
+// 引入环境变量
 const env = require('../config/'+process.env.env_config+'.env')
 
+// 合并baseWebpackConfig配置的综合配置
+// 同时定义了模板文件template: 'index.html'
 const webpackConfig = merge(baseWebpackConfig, {
   module: {
     rules: utils.styleLoaders({

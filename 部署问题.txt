@@ -1,0 +1,130 @@
+https://www.cnblogs.com/zhuzhenwei918/p/6866094.html
+
+为什么vue+webpack需要用到node，如何部署项目到服务器？
+
+第一部分　
+ 　之前一直不太理解为什么要使用vue+webapck，还有在使用了vue-cli之后会用到后台，即vue-cli自动帮我们安装了express服务器，
+在本地服务器上运行，因为我们希望可以模拟在真是服务器上的效果，然而又不可能始终在真实的服务器上运行，所以在本地服务器上运行就很重要了。
+
+　　但是通过vue+webpack构建的项目如何部署到服务器上呢？
+
+　　首先VUE 是一个javascript的前端框架，注定了它是运行在浏览器里的，对服务器本地没有任何要求，只要一个静态文件服务器能通过http访问到
+其资源文件就足矣！无论你是用apache ,ngnix 就算你要用node 自己实现一个静态文件服务器，也用不了多少行代码。
+
+　　npm run dev 是用来在本地开发的时候做调试用的，vue开发的是前端的东西，不是nodejs 服务端程序，按道理讲，生产环境里就不该存在npm，
+甚至nodejs也不需要（用nodejs来做web静态服务的除外），正确的做法很简单，通过npm run build 把生成的dist文件夹（不要上传文件夹）里的
+内容上传到http服务器上就可以通过 http来访问了，开发机上正常，上传以后 程序出现错误不能运行的原因99.99%的可能性是你引用资源的路径有问题。
+
+　　一般如果vue框架的程序上传到网站服务器的根目录下是不 会有问题的，也不存在资源文件引用错误的情况，但如果你不是根目录，就会有问题，
+通过vue-cli 生成的开发目录，build以后默认引用资源文件的路径是:
+
+比如 app.js的引用方式<script type="text/javascript" src="/static/js/app.js"></script>
+　　所以，如果你的目录结构是 如下:
+
+www/
+ +hot/
+   +static/
+   +index.html
+　　当你通过http://www.xxx.com/hot/index.html来访问的时候 会出现找不到app.js。
+
+　　因为index.html里引用的app.js路径是：
+
+http://www.xxx.com/static/js/app.js
+　　但是app.js的实际路径是：
+
+http://www.xxx.com/hot/static/js/app.js 所以出现了404
+　　要解决的方法很简单把引用方式 改成如下两种方式 都可以：
+
+<script type="text/javascript" src="./static/js/app.js"></script>
+或者
+<script type="text/javascript" src="/hot/static/js/app.js"></script>
+推荐这样的方式，可以保正在vue-router生成的url下也不出现问题
+　　都可以，当然这也不需要手动去改。
+
+　　
+
+　　或者在config中的index.js下修改webpack配置：
+
+assetsPublicPath: './'
+或者
+assetsPublicPath: '/hot/',
+　　这样，我们就基本解决了有服务器子目下运行的问题，
+
+　　当然，如果你还用到了vue-router
+
+　　要在router的配置中加上
+
+export default new Router({
+  mode: 'history',
+  base: '/hot/', //加上这一行
+　　用浏览器打开http://www.xxx.com/hot/
+
+　　一切运行正常，点击各种链接也能出来，但是由于我启用了history模式，我直接在浏览里访问 http://www.xxx.com/hot/item/1
+这样的url是又404了，为什么 我可以在首页通过点击进入 http://www.xxx.com/hot/item/1 这个页面，但是直接访问又不行呢，
+
+　　因为在history 模式下，只是动态的通过js 操作window.history 来改变有浏览器地址栏里的路径，并没有发起http请求，
+但当你直接 在浏览器里输入这个地址的时候 就一定要先对服务器放起http请求，但是这个目标在服务器上又不存在所以就返回了404了，
+怎么解决呢，就是把所有的请求全部转发到http://www.xxx.com/hot/index.hmtl上就可以了　　
+
+　　我用的是apache 做web服务器的虚拟空间，而且开启支.htaccess文件支持，我成我的文件里加上如下，就一切正常了，
+
+复制代码
+<IfModule mod_rewrite.c>
+  Options +FollowSymlinks
+  RewriteEngine On
+
+  RewriteCond %{REQUEST_URI} ^/(hot|hot/.*)$
+  RewriteRule ^/hot/index\.html$ - [L,NC]
+
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule ^(hot|hot/.*)$ hot/index.html [L]
+</IfModule>
+
+复制代码
+这个配置的作用就是把所有服务器上不存在请求全部转发到index.html上去，这样就可以直接通过各种url来访问了
+
+主要内容均来自：https://www.zhihu.com/question/46630687
+
+
+
+第二部分： 实际问题的解决
+　　这一部分即解决实际中遇到的问题。
+
+　　我将文件打包成了production之后放在下面的目录之下：
+
+　　这样，即放在了tomcat的webapps下的bbg下的wechat2中，而没有直接放在webapps的根目录下，这样在实际运行的过程中，就会发现报错，
+不能正常显示，因为index.html引用的路径都是/static/.... ，然而static 叜webapps的根目录下，所以就会报错。
+
+　　解决方法很简答，即在config下的index.js中修改静态资源的路径：、
+
+build: {
+    env: require('./prod.env'),
+    index: path.resolve(__dirname, '../dist/index.html'),
+    assetsRoot: path.resolve(__dirname, '../dist'),
+    assetsSubDirectory: 'static',
+    assetsPublicPath: '/bbg/wechat2/',
+　　从最后两行，可以看到这样index.html最终引用的就是/bbg/wechat2/static了，成功执行。
+
+
+
+　　说明：之所以将静态文件放在这里运行，是因为我们在bbg同级的目录下放了一个war包。 war包实际上就是将一个zip文件的后缀直接修改为war，
+然后tomcat服务器在启动时，就会自动解压这个war包。解压后就和你直接整套的去部署是一样的，也就是通过war包可以方便实际的运行。
+
+其实war文件就是Java中web应用程序的打包。借用一个老兄的话，“当你一个web应用程序很多的时候，如果你想把它部署到别的机器上，
+来回拷这些文件是件挺郁闷的事情，如果要是一个文件就好了。。。那么war文件就可以满足你这个小小的要求”。
+
+那有人会说，这和直接打成rar文件不一样吗？区别大了！
+
+如果你直接打成rar文件，你得手动的去解压缩，但是war文件不需要，你把它放到tomcat的webapp目录下，就可以直接运行了，我觉得这个功能够强大，哈哈。
+
+在tomcat安装目录下的conf目录下有个server.xml，搜索“unpackWARs”关键字，你会看到在<Host>标签中会有对其的设置，如果设置成true，
+那么tomcat在启动的时候，会在webapps目录下自动解压你那个war文件；如果设置成false，则tomcat直接访问war文件。
+
+
+      <Host name="localhost"  appBase="webapps"
+            unpackWARs="true" autoDeploy="true">
+
+
+假如他的值是true，你的tomcat已经启动了，你把自动解压的文件夹删了，tomcat又会自动解压，我觉得它是实时的在检查，一旦没有，就会解压。
+你可以不用担心启动它和放war的顺序，或者启动服务器和存放文件的顺序。

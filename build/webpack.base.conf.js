@@ -1,13 +1,18 @@
+// 使用严格模式
 'use strict'
+
+// 导入必要的组件和文件
 const path = require('path')
 const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
 
+// 解决路径问题
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
 
+// 创建lint规则
 const createLintingRule = () => ({
   test: /\.(js|vue)$/,
   loader: 'eslint-loader',
@@ -19,6 +24,7 @@ const createLintingRule = () => ({
   }
 })
 
+// node导出
 module.exports = {
   context: path.resolve(__dirname, '../'),
   entry: {

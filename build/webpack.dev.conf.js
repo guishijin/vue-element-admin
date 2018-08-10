@@ -26,6 +26,8 @@ const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
 
 // 整合webpack需要的配置，使用webpack的merge插件模块整理
+// 同时：合并了baseWebpackConfig(定义了entry: app:src/index.js)
+// 此处定义了template：index.html
 const devWebpackConfig = merge(baseWebpackConfig, {
   module: {
     rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap, usePostCSS: true })
