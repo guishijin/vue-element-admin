@@ -1,21 +1,39 @@
+// 使用严格模式
 'use strict'
-require('./check-versions')()
 
+console.log('1、使用严格模式编译！')
+
+// 引入check-versions.js文件
+require('./check-versions')()
+console.log('2、引入版本检查脚本')
+
+// 引入必要的模块
 const ora = require('ora')
 const rm = require('rimraf')
 const path = require('path')
 const chalk = require('chalk')
 const webpack = require('webpack')
+console.log('3、引入必要的核心模块：ora、rimraf、path、chalk、webpack')
+
 const config = require('../config')
 const webpackConfig = require('./webpack.prod.conf')
+console.log('4、引入配置：config、webpack.prod.conf')
+
 var connect = require('connect');
 var serveStatic = require('serve-static')
 
+console.log('5、使用ora参数：【' + 'building for ' + process.env.env_config + ' environment...】')
 const spinner = ora('building for ' + process.env.env_config + ' environment...')
 spinner.start()
 
+console.log('6、删除 ../dist/static 目录')
+// 删除 ../dist/static目录
 rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
   if (err) throw err
+
+  // 开始打包
+  console.log('7、开始打包 webpack， 使用配置webpackConfig')
+  console.log(chalk.cyan('8、正在打包 ..............................'))
   webpack(webpackConfig, (err, stats) => {
     spinner.stop()
     if (err) throw err
