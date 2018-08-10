@@ -1,4 +1,7 @@
+// 使用严格模式
 'use strict'
+
+// 引入必要的模块和文件
 const path = require('path')
 const utils = require('./utils')
 const webpack = require('webpack')
@@ -9,13 +12,20 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const portfinder = require('portfinder')
 
+/**
+ * 定义函数 处理路径问题
+ * @param dir
+ * @returns {*}
+ */
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
 
+// 定义主机HOST和端口PORT
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
 
+// 整合webpack需要的配置，使用webpack的merge插件模块整理
 const devWebpackConfig = merge(baseWebpackConfig, {
   module: {
     rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap, usePostCSS: true })
@@ -82,6 +92,7 @@ module.exports = new Promise((resolve, reject) => {
         : undefined
       }))
 
+      console.log('#################### 开始： resolve(devWebpackConfig) #####################')
       resolve(devWebpackConfig)
     }
   })
