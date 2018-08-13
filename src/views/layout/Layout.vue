@@ -3,8 +3,10 @@
     <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside"></div>
     <sidebar class="sidebar-container"></sidebar>
     <div class="main-container">
-      <navbar></navbar>
-      <tags-view></tags-view>
+      <Sticky>
+        <navbar></navbar>
+        <tags-view></tags-view>
+      </Sticky>
       <app-main></app-main>
     </div>
   </div>
@@ -13,6 +15,7 @@
 <script>
 import { Navbar, Sidebar, AppMain, TagsView } from './components'
 import ResizeMixin from './mixin/ResizeHandler'
+import Sticky from '@/components/Sticky'
 
 export default {
   name: 'layout',
@@ -20,7 +23,8 @@ export default {
     Navbar,
     Sidebar,
     AppMain,
-    TagsView
+    TagsView,
+    Sticky
   },
   mixins: [ResizeMixin],
   computed: {
@@ -67,5 +71,12 @@ export default {
     height: 100%;
     position: absolute;
     z-index: 999;
+  }
+
+  .fixed-header {
+    position: fixed;
+    top: 0px;
+    width: 80%;
+    z-index: 1000;
   }
 </style>
