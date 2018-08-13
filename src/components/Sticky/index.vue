@@ -37,6 +37,9 @@ export default {
     this.height = this.$el.getBoundingClientRect().height
     window.addEventListener('scroll', this.handleScroll)
     window.addEventListener('resize', this.handleReize)
+    window.setInterval(() => {
+      this.handleReize()
+    }, 500)
   },
   activated() {
     this.handleScroll()
@@ -44,6 +47,7 @@ export default {
   destroyed() {
     window.removeEventListener('scroll', this.handleScroll)
     window.removeEventListener('resize', this.handleReize)
+    window.clearInterval()
   },
   methods: {
     sticky() {
@@ -56,9 +60,9 @@ export default {
       this.isSticky = true
     },
     reset() {
-      if (!this.active) {
-        return
-      }
+      // if (!this.active) {
+      //  return
+      // }
       this.position = ''
       this.width = 'auto'
       this.active = false
@@ -74,8 +78,11 @@ export default {
       this.reset()
     },
     handleReize() {
+      console.log('大小发生变化！！！')
       if (this.isSticky) {
         this.width = this.$el.getBoundingClientRect().width + 'px'
+      } else {
+        this.reset()
       }
     }
   }
