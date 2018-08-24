@@ -3,6 +3,7 @@
     <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside"></div>
     <sidebar class="sidebar-container"></sidebar>
     <div class="main-container">
+      <Snake></Snake>
       <sticky>
         <navbar></navbar>
         <tags-view></tags-view>
@@ -17,10 +18,12 @@
   import ResizeMixin from './mixin/ResizeHandler'
 
   import Sticky from '@/components/Sticky'
+  import Snake from '../../components/Snake/Snake'
 
   export default {
     name: 'layout',
     components: {
+      Snake,
       Navbar,
       Sidebar,
       AppMain,
