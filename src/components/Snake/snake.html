@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>贪吃蛇</title>
+
+  <style type="text/css">
+    body {
+      /*background: lightcyan;*/
+    }
+
+    #mainDiv {
+      overflow: hidden;
+      font-size: 0px;
+      margin: auto;
+      border: 1px solid black;
+    }
+
+    #main {
+      border: 3px solid black;
+      margin: auto;
+      background: lightcyan;
+    }
+
+    .col {
+      width: 15px;
+      border: 1px solid gray;
+      height: 15px;
+      display: inline-block;
+      background: seashell;
+    }
+
+    .activeSneck {
+      background: black;
+    }
+
+    .egg {
+      background: red;
+      border-radius: 50%;
+    }
+
+    .scoreDiv {
+      float: right;
+      width: 100px;
+      color: red
+    }
+
+    .title {
+      text-align: center;
+      font-size: 2rem;
+      color: silver;
+      text-shadow: 2px 2px 12px yellow;
+    }
+
+    #button_ {
+      margin-left: 23%;
+      display: inline-block;
+    }
+
+    button {
+      width: 60px;
+      height: 25px;
+      background: palegoldenrod;
+      color: orange;
+      font-size: 16px;
+    }
+
+    /*#button_2{
+          width: 120px;
+          }*/
+  </style>
+</head>
+
+<body>
+<div id="main">
+  <div class="title">贪吃蛇游戏</div>
+  <div class="scoreDiv">得分：0分</div>
+  <div id="mainDiv"></div>
+  <button id="button_">start</button>
+  <button id="button_1">pause</button>
+  <button id="button_2">restart</button>
+</div>
+
+<script type="text/javascript">
+  //公共变量
+  //生成画布
+  var rowNum = 30; //行
+  var colNum = 20 //列
+  var width = 15;
+  var height = 15;
+  var arr = [];
+  var score = 0;
+  //蛇身
+  //蛇的移动偏移量
+  var x = 2;
+  var y = 10;
+  var sneckTimer = null;
+  var time = 100 //移动速度
+  var sneckBody = []; //存放蛇身
+  var direction = 'right'; //蛇身移动方向
+  var score = 0; //得分
+  var eggX = 0;
+  var eggY = 0;
+  var main = document.getElementById("main")
+  main.style.width = colNum * width + colNum * 2 + 'px'
+  var mainDiv = document.getElementById("mainDiv")
+  mainDiv.style.width = colNum * width + colNum * 2 + 'px'
+  var scoreDiv = document.querySelector('.scoreDiv')
+
+  function canvasBG(rowNum, colNum) {
+    for (var i = 0; i < rowNum; i++) {
+      var row = document.createElement("div");
+      var rowArray = [];
+      for (var j = 0; j < colNum; j++) {
+        var col = document.createElement("div");
+        col.className = 'col'
+        row.appendChild(col)
+        rowArray.push(col)
+      }
+      mainDiv.appendChild(row);
+      arr.push(rowArray)
+    }
+  }
+
+  canvasBG(rowNum, colNum);
+
+  function sneck() {
+    for (var i = 0; i < 3; i++) {
+      arr[y][i].className = 'col activeSneck';
+      sneckBody.push(arr[y][i]);
+    }
+  }
+
+  sneck();
+
+  function sneckmove() {
+    sneckTimer = setInterval(function () {
+      //根据设置的方向来设置蛇头移动的方向。
+      switch (direction) {
+        case 'right':
+          x++;
+          break;
+        case 'left':
+          x--
+          break;
+        case 'up':
+          y--;
+          break;
+        case 'down':
+          y++;
+          break;
+        default:
+          break;
+      }
+      if (y < 0 || y >= rowNum || x < 0 || x >= colNum) {
+        alert('game over' + " " + '总分' + score);
+        clearInterval(sneckTimer);
+        return;
+      }
+      //判断蛇吃到自己
+      for (var i = 0; i < sneckBody.length; i++) {
+        if (sneckBody[i] == arr[y][x]) {
+          alert('game over' + " " + '总分' + score);
+          clearInterval(sneckTimer);
+          return;
+        }
+      }
+      //判断蛇头移动的位置是否有蛋
+      if (eggX == x && eggY == y) {
+        arr[eggY][eggX].className = 'col activeSneck'
+        sneckBody.push(arr[eggY][eggX]); //加入到蛇身
+        score++;
+        scoreDiv.innerHTML = '总分:' + score + '分';
+        createEgg();
+      } else {
+        sneckBody[0].className = 'col';
+        sneckBody.shift();
+        arr[y][x].className = 'col activeSneck';
+        sneckBody.push(arr[y][x]);
+      }
+    }, time)
+  }
+
+  //
+  var delaytime = null;
+  var changeDir = true;
+  //		var timespeed = 50;
+  //通过上下左右按键来改变direction的值，来改变蛇头的移动方向。
+  document.onkeydown = function (event) {
+    //判断是否需要改变方向,ture表示需要改变，false不要
+    if (!changeDir) {
+      return; //表示直接结束函数，后续代码不执行；
+    }
+    var event = window.event || event;
+    switch (event.keyCode) {
+      case 37:
+        if (direction != 'right') {
+          direction = 'left';
+        }
+        break;
+      case 39:
+        if (direction != 'left') {
+          direction = 'right';
+        }
+        break;
+      case 38:
+        if (direction != 'down') {
+          direction = 'up';
+        }
+        break;
+      case 40:
+        if (direction != 'up') {
+          direction = 'down';
+        }
+        break;
+      default:
+        break;
+    }
+    changeDir = false;
+    //加延时以及changeDir解决同时按两个键出现的bug;
+    delaytime = setTimeout(function () {
+      changeDir = true;
+    }, time)
+  }
+
+  //随机函数
+  function random_(max) {
+    var rand = Math.floor(Math.random() * max);
+    return rand;
+  }
+
+  function createEgg() {
+    //随机出新的egg的下标的x和y
+    eggX = random_(colNum);
+    eggY = random_(rowNum);
+    //如果即将生蛋的位置和蛇身重合，
+    if (arr[eggY][eggX].className == 'col activeSneck') {
+      createEgg(); //重新生成
+    } else {
+      //否则，给新生的蛋的位置，并且修改样式
+      arr[eggY][eggX].className = 'col egg';
+    }
+  }
+
+  createEgg();
+
+  //暂停
+  var button_ = document.getElementById("button_")
+  button_.onclick = function () {
+    //			clearInterval(sneckTimer)
+    sneckmove()
+  }
+  //开始
+  var button_1 = document.getElementById("button_1")
+  button_1.onclick = function () {
+    console.log('1')
+    clearInterval(sneckTimer)
+  }
+  //重新开始
+  var button_2 = document.getElementById("button_2")
+  button_2.onclick = function () {
+    for (var i = 0; i < colNum; i++) {
+      for (var j = 0; j < rowNum; j++) {
+
+        arr[j][i].className = 'col'
+      }
+    }
+    x = 2;
+    y = 10;
+    sneckBody = [];
+    sneck();
+    createEgg();
+  }
+  //
+  //		sneck();
+  //		createEgg();
+</script>
+</body>
+
+</html>
