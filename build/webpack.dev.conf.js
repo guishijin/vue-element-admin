@@ -1,6 +1,8 @@
 // 使用严格模式
 'use strict'
 
+console.log("1-#################### webpack.dev.conf.js ####################")
+
 // 引入必要的模块和文件
 const path = require('path')
 const utils = require('./utils')
@@ -25,8 +27,9 @@ function resolve (dir) {
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
 
+console.log("2-#################### 合并配置 ####################")
 // 整合webpack需要的配置，使用webpack的merge插件模块整理
-// 同时：合并了baseWebpackConfig(定义了entry: app:src/index.js)
+// 同时：合并了baseWebpackConfig(定义了entry: app:src/main.js)
 // 此处定义了template：index.html
 const devWebpackConfig = merge(baseWebpackConfig, {
   module: {
@@ -73,6 +76,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
   ]
 })
 
+console.log("3-#################### 导出Promise对象 ####################")
 module.exports = new Promise((resolve, reject) => {
   portfinder.basePort = process.env.PORT || config.dev.port
   portfinder.getPort((err, port) => {
@@ -94,7 +98,7 @@ module.exports = new Promise((resolve, reject) => {
         : undefined
       }))
 
-      console.log('#################### 开始： resolve(devWebpackConfig) #####################')
+      console.log('4-#################### 开始： resolve(devWebpackConfig) #####################')
       resolve(devWebpackConfig)
     }
   })

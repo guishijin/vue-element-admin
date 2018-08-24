@@ -1,6 +1,8 @@
 // 使用严格模式
 'use strict'
 
+console.log("1-#################### webpack.prod.conf.js ####################")
+
 // 引入必要的模块和文件
 const path = require('path')
 const utils = require('./utils')
@@ -22,6 +24,7 @@ function resolve (dir) {
 // 引入环境变量
 const env = require('../config/'+process.env.env_config+'.env')
 
+console.log("2-#################### 合并配置 ####################")
 // 合并baseWebpackConfig配置的综合配置
 // 同时定义了模板文件template: 'index.html'
 const webpackConfig = merge(baseWebpackConfig, {
@@ -156,6 +159,7 @@ const webpackConfig = merge(baseWebpackConfig, {
   ]
 })
 
+console.log("3-#################### 代码压缩配置 ####################")
 if (config.build.productionGzip) {
   const CompressionWebpackPlugin = require('compression-webpack-plugin')
 
@@ -174,9 +178,11 @@ if (config.build.productionGzip) {
   )
 }
 
+console.log("4-#################### 代码压缩分析报告配置 ####################")
 if (config.build.bundleAnalyzerReport) {
   const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
   webpackConfig.plugins.push(new BundleAnalyzerPlugin())
 }
 
+console.log("5-#################### 导出配置 webpackConfig ####################")
 module.exports = webpackConfig

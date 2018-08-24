@@ -1,6 +1,8 @@
 // 使用严格模式
 'use strict'
 
+
+console.log("--#################### build.js ####################")
 console.log('1、使用严格模式编译！')
 
 // 引入check-versions.js文件
