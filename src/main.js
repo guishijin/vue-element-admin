@@ -19,6 +19,9 @@ import './mock' // simulation data
 
 import * as filters from './filters' // global filters
 
+// 在 main.js 引入即可
+require('es6-promise').polyfill()
+
 Vue.use(Element, {
   size: 'medium', // set element-ui default size
   i18n: (key, value) => i18n.t(key, value)
