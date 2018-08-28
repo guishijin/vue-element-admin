@@ -327,21 +327,5 @@ export const asyncRouterMap = [
     children: [{ path: 'index', component: () => import('@/views/i18n-demo/index'), name: 'i18n', meta: { title: 'i18n', icon: 'international' }}]
   },
 
-  {
-    path: '/excel2',
-    component: Layout,
-    redirect: '/excel/export-excel',
-    name: 'excel2',
-    meta: {
-      title: 'excel2',
-      icon: 'excel'
-    },
-    children: [
-      { path: 'export-excel', component: () => import('@/views/excel/exportExcel'), name: 'exportExcel', meta: { title: 'exportExcel' }},
-      { path: 'export-selected-excel', component: () => import('@/views/excel/selectExcel'), name: 'selectExcel', meta: { title: 'selectExcel' }},
-      { path: 'upload-excel', component: () => import('@/views/excel/uploadExcel'), name: 'uploadExcel', meta: { title: 'uploadExcel' }}
-    ]
-  },
-
   { path: '*', redirect: '/404', hidden: true }
 ]
