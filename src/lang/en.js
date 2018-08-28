@@ -60,7 +60,10 @@ export default {
     exportZip: 'Export Zip',
     theme: 'Theme',
     clipboardDemo: 'Clipboard',
-    i18n: 'I18n'
+    i18n: 'I18n',
+    game: 'Game',
+    gameSnake: 'Snake',
+    gameCalculator: 'Calculator'
   },
   navbar: {
     logOut: 'Log Out',

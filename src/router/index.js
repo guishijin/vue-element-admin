@@ -330,8 +330,16 @@ export const asyncRouterMap = [
   {
     path: '/game',
     component: Layout,
-    redirect: 'noredirect',
-    children: [{ path: 'index', component: () => import('@/views/games/snakeView'), name: 'snakeView', meta: { title: 'gameSnake', icon: 'clipboard' }}]
+    redirect: '/game/snake',
+    name: 'game',
+    meta: {
+      title: 'game',
+      icon: 'excel'
+    },
+    children: [
+      { path: 'snake', component: () => import('@/views/games/snakeView'), name: 'snakeView', meta: { title: 'gameSnake', icon: 'clipboard' }},
+      { path: 'calculator', component: () => import('@/views/games/calculatorView'), name: 'calculatorView', meta: { title: 'gameCalculator', icon: 'clipboard' }}
+    ]
   },
 
   { path: '*', redirect: '/404', hidden: true }
