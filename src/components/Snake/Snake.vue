@@ -53,7 +53,7 @@
             '    overflow: hidden;\n' +
             '    font-size: 0px;\n' +
             '    margin: auto;\n' +
-            '    border: 1px solid black;\n' +
+            '    border: 0px solid black;\n' +
             '    display: block;'
           row.className = 'rowLine'
           const rowArray = []
