@@ -196,6 +196,12 @@
         console.log('3-重启按钮!')
         for (let i = 0; i < this.colNum; i++) {
           for (let j = 0; j < this.rowNum; j++) {
+            // TODO: 对于VUE的方式的绑定需要深入了解
+            this.arr[j][i].style = '    width: 17px;\n' +
+            '    border: 1px solid gray;\n' +
+            '    height: 17px;\n' +
+            '    display: inline-block;\n' +
+            '    background: seashell;'
             this.arr[j][i].className = 'col'
           }
         }
