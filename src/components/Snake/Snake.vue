@@ -222,7 +222,7 @@
       this.canvasBG(this.rowNum, this.colNum)
       this.sneck()
 
-      var self = this
+      const self = this
       // 通过上下左右按键来改变direction的值，来改变蛇头的移动方向。
       document.onkeydown = function(event) {
         console.log('按键处理：this.direction = ' + self.direction)
