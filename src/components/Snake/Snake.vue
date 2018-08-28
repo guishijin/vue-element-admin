@@ -30,7 +30,8 @@
         x: 2,
         y: 10,
         sneckTimer: null,
-        time: 500,
+        time: 300,
+        keyDealTime: 100,
         sneckBody: [],
         direction: 'right',
         eggX: 0,
@@ -259,7 +260,7 @@
         // 加延时以及changeDir解决同时按两个键出现的bug;
         self.delaytime = setTimeout(function() {
           self.changeDir = true
-        }, self.time)
+        }, self.keyDealTime)
       }
       this.createEgg()
     }
