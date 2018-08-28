@@ -30,7 +30,7 @@
         x: 2,
         y: 10,
         sneckTimer: null,
-        time: 100,
+        time: 500,
         sneckBody: [],
         direction: 'right',
         eggX: 0,
@@ -74,6 +74,13 @@
       },
       sneck: function() {
         for (let i = 0; i < 3; i++) {
+          // TODO: 对于VUE的方式的绑定需要深入了解
+          this.arr[this.y][i].style = '    background: black;\n' +
+          '    width: 17px;\n' +
+          '    border: 1px solid gray;\n' +
+          '    height: 17px;\n' +
+          '    display: inline-block;\n' +
+          '    font-size: 0px;'
           this.arr[this.y][i].className = 'col activeSneck'
           this.sneckBody.push(this.arr[this.y][i])
         }
@@ -231,8 +238,8 @@
             }
             break
           case 39:
-            if (this.direction !== 'left') {
-              this.direction = 'right'
+            if (self.direction !== 'left') {
+              self.direction = 'right'
             }
             break
           case 38:
@@ -273,8 +280,8 @@
     border: 3px solid black;
     margin: auto;
     background: #282b2b;
-    width: 348px;
-    height: 600px;
+    width: 354px;
+    height: 606px;
     display: block;
   }
 
@@ -298,9 +305,9 @@
 
   .activeSneck {
     background: black;
-    width: 15px;
+    width: 17px;
     border: 1px solid gray;
-    height: 15px;
+    height: 17px;
     display: inline-block;
     font-size: 0px;
   }
@@ -309,8 +316,8 @@
     background: red;
     border-radius: 50%;
     border: 1px solid grey;
-    width: 17px;
-    height: 17px;
+    width: 15px;
+    height: 15px;
     display: inline-block;
   }
 

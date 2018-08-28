@@ -327,5 +327,12 @@ export const asyncRouterMap = [
     children: [{ path: 'index', component: () => import('@/views/i18n-demo/index'), name: 'i18n', meta: { title: 'i18n', icon: 'international' }}]
   },
 
+  {
+    path: '/game',
+    component: Layout,
+    redirect: 'noredirect',
+    children: [{ path: 'index', component: () => import('@/views/games/snakeView'), name: 'snakeView', meta: { title: 'gameSnake', icon: 'clipboard' }}]
+  },
+
   { path: '*', redirect: '/404', hidden: true }
 ]

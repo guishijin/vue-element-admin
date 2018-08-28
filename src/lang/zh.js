@@ -60,7 +60,8 @@ export default {
     exportZip: 'Export Zip',
     theme: '换肤',
     clipboardDemo: 'Clipboard',
-    i18n: '国际化'
+    i18n: '国际化',
+    gameSnake: '贪吃蛇游戏'
   },
   navbar: {
     logOut: '退出登录',
