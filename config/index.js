@@ -16,7 +16,7 @@ module.exports = {
 
     // can be overwritten by process.env.HOST
     // if you want dev by ip, please set host: '0.0.0.0'
-    host: '172.16.10.10',
+    host: '127.0.0.1',
     useLocalIp: true,
     open: true,
     port: 9527, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
