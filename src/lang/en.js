@@ -73,7 +73,7 @@ export default {
     theme: 'theme'
   },
   login: {
-    title: 'Login Form',
+    title: 'ADM V1.0 - Login Form',
     logIn: 'Log in',
     username: 'Username',
     password: 'Password',

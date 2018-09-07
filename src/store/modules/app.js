@@ -1,5 +1,6 @@
 import Cookies from 'js-cookie'
 
+// 修改默认语言为中文 - zh
 const app = {
   state: {
     sidebar: {
@@ -7,7 +8,7 @@ const app = {
       withoutAnimation: false
     },
     device: 'desktop',
-    language: Cookies.get('language') || 'en'
+    language: Cookies.get('language') || 'zh'
   },
   mutations: {
     TOGGLE_SIDEBAR: state => {
