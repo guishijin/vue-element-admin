@@ -338,7 +338,8 @@ export const asyncRouterMap = [
     },
     children: [
       { path: 'snake', component: () => import('@/views/games/snakeView'), name: 'snakeView', meta: { title: 'gameSnake', icon: 'clipboard' }},
-      { path: 'calculator', component: () => import('@/views/games/calculatorView'), name: 'calculatorView', meta: { title: 'gameCalculator', icon: 'clipboard' }}
+      { path: 'calculator', component: () => import('@/views/games/calculatorView'), name: 'calculatorView', meta: { title: 'gameCalculator', icon: 'clipboard' }},
+      { path: 'listArticle', component: () => import('@/views/example/list'), name: 'listView', meta: { title: 'gameCalculator', icon: 'clipboard' }}
     ]
   },
 
